@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Route, Link, NavLink, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Link, NavLink, Redirect, Prompt } from 'react-router-dom';
 import AboutPage from './pages/AboutPage'
 import './App.css';
 
 function App() {
 
   const [loggedIn, setLoggedIn] = useState(false);
+  const [age, setAge] = useState(null);
 
   function onClickHandle() {
     setLoggedIn(!loggedIn);
+  }
+
+  function onChangeHandle(e) {
+    setAge(e.target.value);
   }
 
   return (
     <BrowserRouter>
       <div className="App">
         <header className="App-header">
-          <ul>
-            <li>
+          <ul className="ul-style">
+            <li className="li-style">
               <NavLink
                 className="App-link"
                 exact
@@ -25,7 +30,7 @@ function App() {
                 Home
               </NavLink>
             </li>
-            <li>
+            <li className="li-style">
               <NavLink
                 className="App-link"
                 exact
@@ -34,7 +39,7 @@ function App() {
                 About
               </NavLink>
             </li>
-            <li>
+            <li className="li-style">
               <NavLink
                 className="App-link"
                 exact
@@ -44,8 +49,11 @@ function App() {
               </NavLink>
             </li>
           </ul>
+          <Prompt when={loggedIn && !age} message={(location) => {
+            return location.pathname.startsWith('/user') ? true : "are you sure?"
+          }}></Prompt>
           {loggedIn.toString()}
-          <button onClick={onClickHandle}>
+          <button className="button" onClick={onClickHandle}>
             {loggedIn ? "logout" : "login"}
           </button>
           <Route
@@ -63,7 +71,11 @@ function App() {
             exact
             render={({match}) => {
               return loggedIn ? (
-                <h1>Welcome {match.params.firstname} {match.params.lastname}</h1>
+                <h1>
+                  <h2>Age: {age}</h2>
+                  <input type="text" value={age} onChange={onChangeHandle} />
+                  Welcome {match.params.firstname} {match.params.lastname}
+                </h1>
               ) : (
                 <Redirect to="/" />
               );

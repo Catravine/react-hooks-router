@@ -19,8 +19,27 @@
 
 .App-link {
   color: #09d3ac;
+  text-decoration: none;
 }
 
 .Link-active-style {
   color: green;
+}
+
+.ul-style {
+  display: flex;
+  flex-direction: row;
+}
+
+.li-style {
+  width: 200px;
+  list-style-type: none;
+  border: 1px solid gray;
+  padding: 5px;
+  font-size: 16pt;
+}
+
+.button {
+  width: 100px;
+  padding: 5px;
 }
