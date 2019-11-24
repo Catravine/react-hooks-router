@@ -1,9 +1,16 @@
-import React from 'react';
-import { BrowserRouter, Route, Link, NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter, Route, Link, NavLink, Redirect } from 'react-router-dom';
 import AboutPage from './pages/AboutPage'
 import './App.css';
 
 function App() {
+
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  function onClickHandle() {
+    setLoggedIn(!loggedIn);
+  }
+
   return (
     <BrowserRouter>
       <div className="App">
@@ -37,6 +44,10 @@ function App() {
               </NavLink>
             </li>
           </ul>
+          {loggedIn.toString()}
+          <button onClick={onClickHandle}>
+            {loggedIn ? "logout" : "login"}
+          </button>
           <Route
             path="/"
             exact
@@ -50,7 +61,13 @@ function App() {
           <Route
             path="/user/:firstname/:lastname"
             exact
-            render={({match}) => {return <h1>Welcome {match.params.firstname} {match.params.lastname}</h1>}}
+            render={({match}) => {
+              return loggedIn ? (
+                <h1>Welcome {match.params.firstname} {match.params.lastname}</h1>
+              ) : (
+                <Redirect to="/" />
+              );
+            }}
           />
         </header>
       </div>
